@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #faf8f5;
+  --bg2: #f2ede6;
+  --bg3: #fff;
+  --text: #1a1410;
+  --text2: #6b5e52;
+  --text3: #a8998c;
+  --accent: #c8956c;
+  --accent2: #8b5e3c;
+  --pink: #d4849f;
+  --gold: #c9a84c;
+  --border: #e2d9cf;
+  --radius: 12px;
+  --radius2: 20px;
+  --header-height: 82px;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+.page-shell {
+  padding-top: var(--header-height);
+}
+
+/* Ensure in-page scrolling and anchor jumps account for the fixed header */
+html {
+  scroll-padding-top: var(--header-height);
+}
+
+/* Prevent headings inside pages from being hidden under the fixed header when navigated to */
+.page-shell h1,
+.page-shell h2,
+.page-shell h3,
+.page-shell .section-title {
+  scroll-margin-top: calc(var(--header-height) + 30px);
+}
+
+.container {
+  width: min(1280px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.section-sub {
+  color: var(--text3);
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
