@@ -77,14 +77,14 @@
               <p v-if="it.text">Text: {{ it.text }}</p>
               <div v-if="getPngDesign(it)" class="item-png-block">
                 <p>PNG: {{ getPngDesign(it).fileName || 'Uploaded design' }}</p>
-                <a
+                <button
                   v-if="isAdmin"
-                  :href="getPngSrc(it)"
-                  :download="getPngDesign(it).fileName || `${it.name}.png`"
+                  type="button"
+                  @click="downloadPng(it)"
                   class="download-link"
                 >
                   Download PNG
-                </a>
+                </button>
               </div>
             </div>
             <div class="item-price">{{ formatCurrency(it.price * it.quantity) }}</div>
@@ -196,6 +196,37 @@ export default {
     getPngSrc(item) {
       const pngDesign = this.getPngDesign(item)
       return pngDesign?.url || pngDesign?.dataUrl || ''
+    },
+    async downloadPng(item) {
+      const pngDesign = this.getPngDesign(item)
+      const source = this.getPngSrc(item)
+      if (!pngDesign || !source) return
+
+      const fileName = pngDesign.fileName || `${item.name || 'design'}.png`
+
+      try {
+        let blob
+        if (source.startsWith('data:')) {
+          blob = await (await fetch(source)).blob()
+        } else {
+          const response = await fetch(source)
+          if (!response.ok) throw new Error('Failed to fetch PNG file')
+          blob = await response.blob()
+        }
+
+        const blobUrl = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = blobUrl
+        link.download = fileName
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        window.setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000)
+      } catch (err) {
+        console.error(err)
+        alert(err.message || 'Failed to download PNG')
+      }
     },
     getPngPreviewStyle(item) {
       const pngDesign = this.getPngDesign(item) || {}
@@ -515,14 +546,33 @@ export default {
 }
 
 .download-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(200, 149, 108, 0.28);
+  background: rgba(200, 149, 108, 0.12);
   color: var(--accent);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .download-link:hover {
-  text-decoration: underline;
+  background: rgba(200, 149, 108, 0.18);
+  border-color: rgba(200, 149, 108, 0.4);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.download-link:focus-visible {
+  outline: 2px solid rgba(200, 149, 108, 0.45);
+  outline-offset: 2px;
 }
 
 .item-price {

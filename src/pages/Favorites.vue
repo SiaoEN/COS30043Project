@@ -8,7 +8,7 @@
           <button @click="removeFavorite(item.id)" class="remove-btn">✕</button>
         </div>
         <h3>{{ item.name }}</h3>
-        <p class="price">${{ item.price }}</p>
+        <p class="price">RM{{ item.price }}</p>
         <button @click="addToCart(item)" class="add-btn">Add to Cart</button>
       </div>
     </div>

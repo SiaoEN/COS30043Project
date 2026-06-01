@@ -7,6 +7,10 @@ const emitAuthChange = () => {
   window.dispatchEvent(new Event('authchange'))
 }
 
+const emitFavoritesChange = () => {
+  window.dispatchEvent(new Event('favoriteschange'))
+}
+
 export const getAuthUser = () => {
   const storedUser = localStorage.getItem(AUTH_KEY) || localStorage.getItem(LEGACY_AUTH_KEY)
   return storedUser ? JSON.parse(storedUser) : null
@@ -67,4 +71,5 @@ export const getFavorites = (user = getAuthUser()) => {
 export const setFavorites = (favorites, user = getAuthUser()) => {
   if (!user) return
   localStorage.setItem(getFavoritesKey(user), JSON.stringify(favorites))
+  emitFavoritesChange()
 }

@@ -4,7 +4,7 @@
       <div>
         <p class="eyebrow">Admin Studio</p>
         <h1>Add a New Product</h1>
-        <p>Create catalog items, upload a photo, and set pricing in RM.</p>
+        <p>Create catalog items, upload one or more photos, and set pricing in RM.</p>
       </div>
       <div class="admin-chip">{{ currentUser?.name || 'Admin' }}</div>
     </section>
@@ -66,7 +66,10 @@
 
         <label>
           Product Photos
-          <input type="file" accept="image/*" multiple @change="handleFileChange" />
+          <div class="file-input">
+            <input class="file-input-control" type="file" accept="image/*" multiple @change="handleFileChange" />
+            <div class="file-hint">Select one or more images to upload</div>
+          </div>
         </label>
 
         <div v-if="imagePreviews.length" class="image-preview-grid">
@@ -311,6 +314,25 @@ textarea {
   gap: 10px;
   min-height: 46px;
   padding: 0 2px;
+}
+
+.file-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-input-control {
+  border: 1px dashed var(--border);
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.file-hint {
+  font-size: 12px;
+  color: var(--text3);
 }
 
 .image-preview-grid {

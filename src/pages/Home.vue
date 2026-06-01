@@ -150,7 +150,9 @@ export default {
         ratings: []
       },
       products: [],
-      featuredProducts: []
+      featuredProducts: [],
+      favoritesVersion: 0,
+      _onFavoritesChange: null
     }
   },
   computed: {
@@ -227,8 +229,10 @@ export default {
       }
 
       setFavorites(favorites)
+      this.favoritesVersion += 1
     },
     isFavorite(productId) {
+      this.favoritesVersion
       const favorites = getFavorites()
       return favorites.some((item) => item.id === productId)
     },
@@ -241,6 +245,15 @@ export default {
   },
   mounted() {
     this.fetchProducts()
+    this._onFavoritesChange = () => {
+      this.favoritesVersion += 1
+    }
+    window.addEventListener('favoriteschange', this._onFavoritesChange)
+  },
+  beforeUnmount() {
+    if (this._onFavoritesChange) {
+      window.removeEventListener('favoriteschange', this._onFavoritesChange)
+    }
   }
 }
 </script>
