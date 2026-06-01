@@ -15,10 +15,19 @@ const app = express()
 const port = process.env.PORT || 5000
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
 
 connectDB()
 
-app.use(cors())
+app.set('trust proxy', 1)
+app.use(
+  cors({
+    origin: allowedOrigins.length ? allowedOrigins : true
+  })
+)
 app.use(express.json({ limit: '15mb' }))
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')))
 

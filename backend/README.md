@@ -13,7 +13,13 @@ npm install
 
 2. Copy `.env.example` to `.env` and set `MONGODB_URI` and `JWT_SECRET`.
 
-3. Start the server:
+3. For Render, also set:
+
+- `PUBLIC_API_URL` to the backend public URL
+- `FRONTEND_URLS` to the deployed frontend URL
+- `UPLOAD_DIR` only if you attach persistent storage for uploads
+
+4. Start the server:
 
 ```bash
 npm run dev
@@ -29,7 +35,8 @@ npm run dev
 
 - Send product create/update requests as `multipart/form-data`.
 - Use the file field name `image` to upload a product photo.
-- The backend stores uploads in `backend/uploads/` and returns a public URL like `http://localhost:5000/uploads/<filename>`.
+- The backend stores uploads in `backend/uploads/` by default and returns a public URL using `PUBLIC_API_URL` when it is set.
+- On Render, the filesystem is ephemeral unless you mount persistent storage.
 
 ## Default Admin
 

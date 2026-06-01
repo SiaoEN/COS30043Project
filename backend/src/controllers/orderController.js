@@ -12,7 +12,8 @@ export const uploadOrderPng = async (req, res) => {
       return res.status(400).json({ message: 'Only PNG files are allowed' })
     }
 
-    const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+    const publicBaseUrl = process.env.PUBLIC_API_URL || `${req.protocol}://${req.get('host')}`
+    const url = `${publicBaseUrl}/uploads/${req.file.filename}`
 
     res.status(201).json({
       url,

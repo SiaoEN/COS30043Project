@@ -1,6 +1,8 @@
 import Product from '../models/Product.js'
 
-const buildImagePath = (req, file) => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
+const getPublicBaseUrl = (req) => process.env.PUBLIC_API_URL || `${req.protocol}://${req.get('host')}`
+
+const buildImagePath = (req, file) => `${getPublicBaseUrl(req)}/uploads/${file.filename}`
 
 const buildImagePaths = (req) => {
   if (!Array.isArray(req.files) || !req.files.length) {
