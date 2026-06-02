@@ -1487,8 +1487,8 @@ export default {
 /* Mobile */
 @media (max-width: 480px) {
   .color-option {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
   }
 
   .price-display {
