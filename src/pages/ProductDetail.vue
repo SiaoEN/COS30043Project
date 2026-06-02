@@ -102,9 +102,20 @@ export default {
   computed: {
     imageList() {
       if (!this.product) return []
-      const imgs = Array.isArray(this.product.images) ? this.product.images.filter(Boolean) : []
-      if (imgs.length) return imgs
-      return this.product.image ? [this.product.image] : []
+
+      const images = []
+
+      if (this.product.image) {
+        images.push(this.product.image)
+      }
+
+      if (Array.isArray(this.product.images)) {
+        images.push(
+          ...this.product.images.filter(Boolean)
+        )
+      }
+
+      return images
     },
     currentImage() {
       if (!this.imageList.length) return ''
