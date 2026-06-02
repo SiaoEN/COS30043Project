@@ -123,9 +123,6 @@ app.set('trust proxy', 1)
 // Allow ALL origins temporarily
 app.use(cors())
 
-// Handle preflight requests
-app.options('*', cors())
-
 // Log every request
 app.use((req, res, next) => {
   console.log('--------------------------------')
