@@ -1504,7 +1504,7 @@ export default {
     width: 70%;
   }
   .page-header-logo {
-    max-width: 150px;
+    max-width: 200px;
     height: auto;
   }
   .page-header {
@@ -1530,7 +1530,7 @@ export default {
   .control-group input,
   .control-group select,
   .control-group textarea {
-    width: 80%;
+    width: 90%;
   }
 }
 
