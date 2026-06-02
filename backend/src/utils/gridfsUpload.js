@@ -1,6 +1,6 @@
 // utils/gridfsUpload.js
 
-import { bucket } from '../config/db.js'
+import { getBucket } from '../config/db.js'
 import { Readable } from 'stream'
 
 export const uploadToGridFS = (file) => {
