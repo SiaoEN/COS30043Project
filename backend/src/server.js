@@ -40,7 +40,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
-app.options('/api/*', cors())
+app.options('/api', cors())
 
 app.use(express.json({ limit: '15mb' }))
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')))
