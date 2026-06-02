@@ -1501,7 +1501,7 @@ export default {
   }
 
   .btn {
-    width: 90%;
+    width: 100%;
   }
   .page-header-logo {
     max-width: 250px;
@@ -1530,7 +1530,7 @@ export default {
   .control-group input,
   .control-group select,
   .control-group textarea {
-    width: 90%;
+    width: 100%;
   }
 }
 
