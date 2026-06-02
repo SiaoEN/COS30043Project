@@ -6,6 +6,9 @@ console.log(req.file)
 
 export const uploadOrderPng = async (req, res) => {
   try {
+    console.log('PNG FILE:')
+    console.log(req.file)
+    
     if (!req.file) {
       return res.status(400).json({ message: 'PNG file is required' })
     }
@@ -24,6 +27,26 @@ export const uploadOrderPng = async (req, res) => {
     })
   } catch (err) {
     res.status(500).json({ message: err.message })
+  }
+}
+
+export const getPng = async (req, res) => {
+  try {
+
+    const bucket = getBucket()
+
+    bucket
+      .openDownloadStream(
+        new mongoose.Types.ObjectId(req.params.id)
+      )
+      .pipe(res)
+
+  } catch (err) {
+
+    res.status(404).json({
+      message: 'PNG not found'
+    })
+
   }
 }
 
