@@ -1490,4 +1490,49 @@ export default {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
+
+/* Phones */
+@media (max-width: 480px) {
+  .page-header-copy {
+    padding: 20px 16px;
+  }
+
+  .page-header-copy h1 {
+    font-size: 1.8rem;
+  }
+
+  .page-header-copy p {
+    font-size: 0.9rem;
+  }
+
+  .preview-box {
+    min-height: 260px;
+    padding: 12px;
+  }
+
+  .garment {
+    width: 120px;
+    height: 160px;
+  }
+
+  .templates-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .design-controls {
+    padding: 16px;
+  }
+
+  .design-controls input,
+  .design-controls select,
+  .design-controls textarea,
+  .design-controls button {
+    width: 100%;
+  }
+}
 </style>

@@ -359,6 +359,15 @@ export default {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
 .checkout { max-width: 1100px; margin: 0 auto; padding: calc(var(--header-height) + 24px) 20px 40px; }
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 20px }
 .checkout-left { display: grid; gap: 20px }
@@ -463,5 +472,63 @@ input { width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(-
   .checkout-grid { grid-template-columns: 1fr }
 
   .checkout-left { gap: 16px }
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .checkout-left,
+  .checkout-right {
+    width: 100%;
+  }
+
+  .sticky {
+    position: static;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .checkout {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .summary-item {
+    gap: 10px;
+  }
+
+  .item-preview {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .meta {
+    min-width: 0;
+  }
+
+  .name,
+  .text,
+  .size {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .summary-right {
+    min-width: 70px;
+  }
+
+  .place-order,
+  .pay-btn {
+    width: 100%;
+  }
 }
 </style>
