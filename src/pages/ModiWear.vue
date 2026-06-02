@@ -1501,10 +1501,10 @@ export default {
   }
 
   .btn {
-    width: 70%;
+    width: 90%;
   }
   .page-header-logo {
-    max-width: 200px;
+    max-width: 250px;
     height: auto;
   }
   .page-header {
