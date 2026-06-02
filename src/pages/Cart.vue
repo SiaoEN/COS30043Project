@@ -39,6 +39,7 @@
 
 <script>
 import { getCart, setCart } from '../utils/cart.js'
+import { apiBaseUrl } from '../utils/api.js'
 
 export default {
   name: 'Cart',
@@ -65,15 +66,25 @@ export default {
       return `RM ${Number(value).toFixed(2)}`
     },
     getCartItemImage(item) {
+      // Product already contains full image URL
+      if (item?.image) {
+        return item.image
+      }
+
+      // GridFS filename fallback
       if (item?.imageFilename) {
         return `${apiBaseUrl}/products/image/${item.imageFilename}`
       }
 
-      // If product has multiple images, use the first one
-      if (item?.imageFilenames && item.imageFilenames.length > 0) {
+      // Additional GridFS images fallback
+      if (
+        Array.isArray(item?.imageFilenames) &&
+        item.imageFilenames.length
+      ) {
         return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
       }
 
+      // Existing ModiWear fallback
       const colorMap = {
         '#667eea': 'blue',
         '#FF6B9D': 'pink',
@@ -92,7 +103,11 @@ export default {
       const customization = item?.customization || {}
       const colorName = colorMap[customization.color] || 'blue'
       const productKey = productMap[customization.productType] || 'tshirt'
-      return new URL(`../assets/images/${colorName}-${productKey}.png`, import.meta.url).href
+
+      return new URL(
+        `../assets/images/${colorName}-${productKey}.png`,
+        import.meta.url
+      ).href
     },
     getItemSize(item) {
       return item?.size || item?.customization?.size || ''

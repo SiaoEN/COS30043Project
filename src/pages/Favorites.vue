@@ -22,6 +22,7 @@
 <script>
 import { getAuthUser, getFavorites, setFavorites } from '../utils/auth.js'
 import { addCartItem } from '../utils/cart.js'
+import { apiBaseUrl } from '../utils/api.js'
 
 export default {
   name: 'Favorites',
@@ -41,14 +42,22 @@ export default {
       this.$router.push('/cart')
     },
     getFavoriteImage(item) {
-      // Use GridFS filenames if available
+      if (item?.image) {
+        return item.image
+      }
+
       if (item?.imageFilename) {
         return `${apiBaseUrl}/products/image/${item.imageFilename}`
       }
-      if (item?.imageFilenames && item.imageFilenames.length > 0) {
+
+      if (
+        Array.isArray(item?.imageFilenames) &&
+        item.imageFilenames.length
+      ) {
         return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
       }
-      return item?.image || ''
+
+      return ''
     }
   },
   mounted() {
