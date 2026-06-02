@@ -1461,78 +1461,56 @@ export default {
     grid-template-columns: 1fr;
   }
 
-  .page-header-brand {
-    min-height: 220px;
-  }
-
-  .page-header-copy {
-    padding: 28px 20px 34px;
-  }
-
   .design-section {
     grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 16px;
   }
 
   .preview-box {
-    min-height: 300px;
+    padding: 10px;
+    min-height: auto;
   }
 
-  .garment {
-    width: 150px;
-    height: 200px;
+  .garment-preview {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
   }
 
-  .templates-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-
-  .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  .page-header-logo {
+    max-width: 180px;
+    height: auto;
   }
 }
 
-/* Phones */
+/* Mobile */
 @media (max-width: 480px) {
-  .page-header-copy {
-    padding: 20px 16px;
+  .color-option {
+    width: 40px;
+    height: 40px;
   }
 
-  .page-header-copy h1 {
-    font-size: 1.8rem;
+  .price-display {
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .page-header-copy p {
-    font-size: 0.9rem;
+  .action-buttons {
+    flex-direction: column;
   }
 
-  .preview-box {
-    min-height: 260px;
-    padding: 12px;
-  }
-
-  .garment {
-    width: 120px;
-    height: 160px;
-  }
-
-  .templates-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .design-controls {
-    padding: 16px;
-  }
-
-  .design-controls input,
-  .design-controls select,
-  .design-controls textarea,
-  .design-controls button {
+  .btn {
     width: 100%;
   }
+}
+
+.modiwear-page,
+.modiwear-container {
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
 }
 </style>

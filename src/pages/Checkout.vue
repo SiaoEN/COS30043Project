@@ -493,6 +493,7 @@ input { width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(-
 
 /* Phones */
 @media (max-width: 600px) {
+
   .checkout {
     padding: 16px;
   }
@@ -502,28 +503,35 @@ input { width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(-
   }
 
   .summary-item {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    grid-template-areas:
+      "image meta"
+      "image price";
     gap: 10px;
   }
 
   .item-preview {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
+    grid-area: image;
+    width: 70px;
+    height: 70px;
   }
 
   .meta {
+    grid-area: meta;
     min-width: 0;
+  }
+
+  .summary-right {
+    grid-area: price;
+    align-items: flex-start;
   }
 
   .name,
   .text,
   .size {
-    overflow-wrap: break-word;
     word-break: break-word;
-  }
-
-  .summary-right {
-    min-width: 70px;
+    overflow-wrap: break-word;
   }
 
   .place-order,
