@@ -25,7 +25,7 @@ import {
   getProducts,
   updateProduct
 } from '../controllers/productController.js';
-import { gfs } from '../config/db.js'; // import GridFS instance
+import { getBucket } from '../config/db.js'; // GridFS bucket for streaming images
 
 const router = Router();
 
@@ -58,15 +58,35 @@ router.route('/:id')
   )
   .delete(protect, adminOnly, deleteProduct)
 
-// Extra route: stream image from GridFS
-router.get('/image/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    if (!file || file.length === 0) {
-      return res.status(404).json({ err: 'No file exists' });
+router.get(
+  '/image/:filename',
+  async (req, res) => {
+
+    try {
+      const bucket = getBucket()
+      const files = await bucket.find({
+      filename: req.params.filename
+    }).toArray()
+
+    if (!files.length) {
+      return res.status(404).json({
+        message: 'Image not found'
+      })
     }
-    const readstream = gfs.createReadStream(file.filename);
-    readstream.pipe(res);
-  });
+
+    res.set('Content-Type', files[0].contentType || 'image/png')
+
+    bucket
+      .openDownloadStreamByName(req.params.filename)
+      .pipe(res)
+
+  } catch (err) {
+    console.error(err)
+
+    res.status(500).json({
+      message: err.message
+    })
+  }
 });
 
 export default router;

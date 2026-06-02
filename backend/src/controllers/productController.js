@@ -112,6 +112,7 @@
 //   res.json({ message: 'Product deleted' })
 // }
 import Product from '../models/Product.js';
+import { uploadToGridFS } from '../utils/gridfsUpload.js'; // utility to handle GridFS uploads
 
 // Normalize payload (keep your existing logic for price, sizes, etc.)
 const normalizeProductPayload = (body) => {
@@ -178,12 +179,20 @@ export const getProductById = async (req, res) => {
 // Create product with GridFS images
 export const createProduct = async (req, res) => {
   try {
-    const filenames = req.files ? req.files.map((file) => file.filename) : [];
+    const uploadedFiles = []
+
+      for (const file of req.files || []) {
+
+        const result =
+          await uploadToGridFS(file)
+
+        uploadedFiles.push(result.filename)
+      }
 
     const product = await Product.create({
       ...normalizeProductPayload(req.body),
-      imageFilename: filenames[0] || '',       // main image
-      imageFilenames: filenames.slice(1) || [] // additional images
+      imageFilename: uploadedFiles[0] || '',       // main image
+      imageFilenames: uploadedFiles.slice(1) || [] // additional images
     });
 
     res.status(201).json(product);
@@ -196,11 +205,16 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const updateData = normalizeProductPayload(req.body);
-    const filenames = req.files ? req.files.map((file) => file.filename) : [];
+    const uploadedFiles = [];
 
-    if (filenames.length) {
-      updateData.imageFilename = filenames[0];
-      updateData.imageFilenames = filenames.slice(1);
+    for (const file of req.files || []) {
+      const result = await uploadToGridFS(file);
+      uploadedFiles.push(result.filename);
+    }
+
+    if (uploadedFiles.length) {
+      updateData.imageFilename = uploadedFiles[0];
+      updateData.imageFilenames = uploadedFiles.slice(1);
     }
 
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, {

@@ -36,78 +36,66 @@
 // })
 
 // export default upload
-// import multer from 'multer';
-// import { GridFsStorage } from 'multer-gridfs-storage';
+// import multer from 'multer'
+// import { GridFsStorage } from 'multer-gridfs-storage'
 
-// // Configure GridFS storage to use MongoDB Atlas
+// console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI)
+
 // const storage = new GridFsStorage({
-//   url: process.env.MONGODB_URI, // Atlas connection string from .env
-//   file: (req, file) => {
-//     // Store each file in the 'uploads' bucket with its original name
-//     return {
-//       filename: file.originalname,
-//       bucketName: 'uploads'
-//     };
-//   }
-// });
+//   url: process.env.MONGODB_URI,
 
-// // Only allow images
-// const fileFilter = (req, file, cb) => {
-//   if (file.mimetype.startsWith('image/')) {
-//     cb(null, true);
-//   } else {
-//     cb(new Error('Only image files are allowed'), false);
+//   file: (req, file) => {
+//     console.log('FILE CALLBACK HIT')
+//     console.log(file.originalname)
+
+//     return {
+//       filename: `${Date.now()}-${file.originalname}`,
+//       bucketName: 'uploads'
+//     }
 //   }
+// })
+
+// storage.on('connection', () => {
+//   console.log('GRIDFS CONNECTED')
+// })
+
+// storage.on('connectionFailed', (err) => {
+//   console.error('GRIDFS CONNECTION FAILED')
+//   console.error(err)
+// })
+
+// const fileFilter = (req, file, cb) => {
+//    if (file.mimetype.startsWith('image/')) {
+//      cb(null, true);
+//    } else {
+//      cb(new Error('Only image files are allowed'), false);
+//    }
 // };
 
 // const upload = multer({
-//   storage,
-//   fileFilter,
-//   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+//    storage,
+//    fileFilter,
+//    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 // });
 
-// export default upload;
+//   export default upload;
 
 import multer from 'multer'
-import { GridFsStorage } from 'multer-gridfs-storage'
 
-console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI)
+const upload = multer({
+  storage: multer.memoryStorage(),
 
-const storage = new GridFsStorage({
-  url: process.env.MONGODB_URI,
+  limits: {
+    fileSize: 5 * 1024 * 1024
+  },
 
-  file: (req, file) => {
-    console.log('FILE CALLBACK HIT')
-    console.log(file.originalname)
-
-    return {
-      filename: `${Date.now()}-${file.originalname}`,
-      bucketName: 'uploads'
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true)
+    } else {
+      cb(new Error('Only image files are allowed'))
     }
   }
 })
 
-storage.on('connection', () => {
-  console.log('GRIDFS CONNECTED')
-})
-
-storage.on('connectionFailed', (err) => {
-  console.error('GRIDFS CONNECTION FAILED')
-  console.error(err)
-})
-
-const fileFilter = (req, file, cb) => {
-   if (file.mimetype.startsWith('image/')) {
-     cb(null, true);
-   } else {
-     cb(new Error('Only image files are allowed'), false);
-   }
-};
-
-const upload = multer({
-   storage,
-   fileFilter,
-   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-});
-
-  export default upload;
+export default upload
