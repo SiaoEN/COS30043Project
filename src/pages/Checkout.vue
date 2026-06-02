@@ -157,15 +157,37 @@ export default {
     getItemPreviewImage(item) {
       const isCustom = item?.itemType === 'custom' || Boolean(item?.customization && !item?.productId)
       if (!isCustom) {
-        // Use GridFS filenames if available
+        if (item?.image) {
+          return item.image
+        }
+
         if (item?.imageFilename) {
           return `${apiBaseUrl}/products/image/${item.imageFilename}`
         }
-        if (item?.imageFilenames && item.imageFilenames.length > 0) {
+
+        if (
+          Array.isArray(item?.imageFilenames) &&
+          item.imageFilenames.length
+        ) {
           return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
         }
-        const productImage = item?.productId?.image || item?.productId?.images?.[0] || item?.image
-        if (productImage) return productImage
+
+        const productRef = item?.productId
+
+        if (productRef?.image) {
+          return productRef.image
+        }
+
+        if (productRef?.imageFilename) {
+          return `${apiBaseUrl}/products/image/${productRef.imageFilename}`
+        }
+
+        if (
+          Array.isArray(productRef?.imageFilenames) &&
+          productRef.imageFilenames.length
+        ) {
+          return `${apiBaseUrl}/products/image/${productRef.imageFilenames[0]}`
+        }
       }
 
       const colorMap = {
@@ -274,10 +296,18 @@ export default {
               itemType,
               customization: i.customization || null
             }
+            if (i.image) {
+              item.image = i.image
+            }
+
             if (i.imageFilename) {
               item.imageFilename = i.imageFilename
             }
-            if (i.imageFilenames && i.imageFilenames.length > 0) {
+
+            if (
+              Array.isArray(i.imageFilenames) &&
+              i.imageFilenames.length
+            ) {
               item.imageFilenames = i.imageFilenames
             }
 

@@ -165,16 +165,37 @@ export default {
     getItemPreviewImage(item) {
       if (!this.isCustomItem(item)) {
         // Use GridFS filenames if available
+        if (item?.image) {
+          return item.image
+        }
+
         if (item?.imageFilename) {
           return `${apiBaseUrl}/products/image/${item.imageFilename}`
         }
-        if (item?.imageFilenames && item.imageFilenames.length > 0) {
+
+        if (
+          Array.isArray(item?.imageFilenames) &&
+          item.imageFilenames.length
+        ) {
           return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
         }
-        if (item?.image) return item.image
 
-        const productImage = item?.productId?.image || item?.productId?.images?.[0]
-        if (productImage) return productImage
+        const productRef = item?.productId
+
+        if (productRef?.image) {
+          return productRef.image
+        }
+
+        if (productRef?.imageFilename) {
+          return `${apiBaseUrl}/products/image/${productRef.imageFilename}`
+        }
+
+        if (
+          Array.isArray(productRef?.imageFilenames) &&
+          productRef.imageFilenames.length
+        ) {
+          return `${apiBaseUrl}/products/image/${productRef.imageFilenames[0]}`
+        }
 
         return new URL('../assets/images/white-tshirt.png', import.meta.url).href
       }
