@@ -23,11 +23,21 @@ const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL ||
 connectDB()
 
 app.set('trust proxy', 1)
-app.use(
-  cors({
-    origin: allowedOrigins.length ? allowedOrigins : true
-  })
-)
+// app.use(
+//   cors({
+//     origin: allowedOrigins.length ? allowedOrigins : true
+//   })
+// )
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}))
 app.use(express.json({ limit: '15mb' }))
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')))
 
