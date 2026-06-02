@@ -40,7 +40,12 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
-app.options('/api', cors())
+app.options('/api', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin)
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.sendStatus(200)
+})
 
 app.use(express.json({ limit: '15mb' }))
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')))
