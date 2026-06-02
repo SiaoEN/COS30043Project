@@ -2,13 +2,11 @@ import Order from '../models/Order.js'
 import User from '../models/User.js'
 import Product from '../models/Product.js'
 
-console.log(req.file)
-
 export const uploadOrderPng = async (req, res) => {
   try {
     console.log('PNG FILE:')
     console.log(req.file)
-    
+
     if (!req.file) {
       return res.status(400).json({ message: 'PNG file is required' })
     }
