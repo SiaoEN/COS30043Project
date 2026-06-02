@@ -95,3 +95,4 @@ storage.on('connectionFailed', (err) => {
   console.error('GRIDFS CONNECTION FAILED')
   console.error(err)
 })
+  export default upload;
