@@ -1,10 +1,11 @@
 import Order from '../models/Order.js'
 import User from '../models/User.js'
 import Product from '../models/Product.js'
+import { uploadToGridFS } from '../utils/gridfsUpload.js'
 
 export const uploadOrderPng = async (req, res) => {
   try {
-    
+
     console.log('PNG FILE:')
     console.log(req.file)
 
@@ -16,13 +17,19 @@ export const uploadOrderPng = async (req, res) => {
       return res.status(400).json({ message: 'Only PNG files are allowed' })
     }
 
-    const publicBaseUrl = process.env.PUBLIC_API_URL || `${req.protocol}://${req.get('host')}`
-    const url = `${publicBaseUrl}/uploads/${req.file.filename}`
+    const result = await uploadToGridFS(req.file)
+
+    const publicBaseUrl =
+      process.env.PUBLIC_API_URL ||
+      `${req.protocol}://${req.get('host')}`
+
+    const url =
+      `${publicBaseUrl}/api/products/image/${result.filename}`
 
     res.status(201).json({
       url,
       fileName: req.file.originalname,
-      storedName: req.file.filename
+      storedName: result.filename
     })
   } catch (err) {
     res.status(500).json({ message: err.message })
@@ -56,12 +63,16 @@ const enrichOrderItemsWithImages = async (items = []) => {
 
   if (!productIds.length) return items
 
-  const products = await Product.find({ _id: { $in: productIds } }).select('image images')
+  const products = await Product.find({ _id: { $in: productIds }}).select('imageFilename imageFilenames')
   const productMap = new Map(products.map((product) => [product._id.toString(), product]))
 
   return items.map((item) => {
     const product = item?.productId && productMap.get(item.productId.toString())
-    const productImage = product?.image || product?.images?.[0] || ''
+    const productImage = product?.imageFilename
+    ? `${process.env.PUBLIC_API_URL}/products/image/${product.imageFilename}`
+    : product?.imageFilenames?.[0]
+      ? `${process.env.PUBLIC_API_URL}/products/image/${product.imageFilenames[0]}`
+      : ''
 
     return {
       ...item,
@@ -89,7 +100,7 @@ export const createOrder = async (req, res) => {
       return {
         ...item,
         itemType,
-        image: item.image || item.productId?.image || item.productId?.images?.[0] || '',
+        image: item.image || item.productId?.imageFilename || item.productId?.imageFilenames?.[0] || '',
         pngDesign,
         customization: item.customization
           ? {
@@ -132,7 +143,7 @@ export const getOrders = async (req, res) => {
     const total = await Order.countDocuments(filter)
     const orders = await Order.find(filter)
       .populate('user', 'email name')
-      .populate('items.productId', 'name image images category')
+      .populate('items.productId', 'name imageFilename imageFilenames category')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
@@ -154,7 +165,7 @@ export const getOrders = async (req, res) => {
 export const getMyOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id })
-      .populate('items.productId', 'name image images category')
+      .populate('items.productId', 'name imageFilename imageFilenames category')
       .sort({ createdAt: -1 })
 
     const enrichedOrders = await Promise.all(
@@ -175,7 +186,7 @@ export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('user', 'email name')
-      .populate('items.productId', 'name image images category')
+      .populate('items.productId', 'name imageFilename imageFilenames category')
     if (!order) return res.status(404).json({ message: 'Order not found' })
 
     // allow admin or owner
