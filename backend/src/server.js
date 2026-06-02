@@ -28,8 +28,26 @@ app.set('trust proxy', 1)
 //     origin: allowedOrigins.length ? allowedOrigins : true
 //   })
 // )
-app.use(cors({
-  origin: (origin, callback) => {
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   },
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }))
+// app.options('/\/api\/.*/', (req, res) => {
+//   res.header('Access-Control-Allow-Origin', req.headers.origin)
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+//   res.sendStatus(200)
+// })
+const corsOptions = {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
@@ -39,13 +57,11 @@ app.use(cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}))
-// app.options('/\/api\/.*/', (req, res) => {
-//   res.header('Access-Control-Allow-Origin', req.headers.origin)
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-//   res.sendStatus(200)
-// })
+}
+
+app.use(cors(corsOptions))
+
+app.options('*', cors(corsOptions))
 
 app.use(express.json({ limit: '15mb' }))
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')))
