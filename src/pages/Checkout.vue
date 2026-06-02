@@ -157,6 +157,13 @@ export default {
     getItemPreviewImage(item) {
       const isCustom = item?.itemType === 'custom' || Boolean(item?.customization && !item?.productId)
       if (!isCustom) {
+        // Use GridFS filenames if available
+        if (item?.imageFilename) {
+          return `${apiBaseUrl}/products/image/${item.imageFilename}`
+        }
+        if (item?.imageFilenames && item.imageFilenames.length > 0) {
+          return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
+        }
         const productImage = item?.productId?.image || item?.productId?.images?.[0] || item?.image
         if (productImage) return productImage
       }
@@ -263,9 +270,15 @@ export default {
               quantity: i.quantity,
               size: this.getItemSize(i),
               text: this.getItemText(i),
-              image: i.image || '',
+              // image: i.image || '',
               itemType,
               customization: i.customization || null
+            }
+            if (i.imageFilename) {
+              item.imageFilename = i.imageFilename
+            }
+            if (i.imageFilenames && i.imageFilenames.length > 0) {
+              item.imageFilenames = i.imageFilenames
             }
 
             if (itemType === 'product') {

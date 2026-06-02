@@ -169,6 +169,12 @@ export default {
 
         this.messageType = 'success'
         this.message = `Product saved: ${data.name}`
+        if (data.imageFilename) {
+          this.existingImages = [`${apiBaseUrl}/products/image/${data.imageFilename}`]
+        }
+        if (Array.isArray(data.imageFilenames)) {
+          this.existingImages.push(...data.imageFilenames.map(fn => `${apiBaseUrl}/products/image/${fn}`))
+        }
         this.form.name = ''
         this.form.price = ''
         this.form.originalPrice = ''

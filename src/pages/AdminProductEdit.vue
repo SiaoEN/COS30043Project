@@ -196,7 +196,14 @@ export default {
         this.form.description = data.description || ''
         this.form.sizes = Array.isArray(data.sizes) ? data.sizes : []
         this.form.featured = Boolean(data.featured)
-        this.existingImages = Array.isArray(data.images) && data.images.length ? data.images : (data.image ? [data.image] : [])
+        //this.existingImages = Array.isArray(data.images) && data.images.length ? data.images : (data.image ? [data.image] : [])
+        this.existingImages = []
+        if (data.imageFilename) {
+          this.existingImages.push(`${apiBaseUrl}/products/image/${data.imageFilename}`)
+        }
+        if (Array.isArray(data.imageFilenames)) {
+          this.existingImages.push(...data.imageFilenames.map(fn => `${apiBaseUrl}/products/image/${fn}`))
+        }
       } catch (err) {
         console.error(err)
         this.messageType = 'error'

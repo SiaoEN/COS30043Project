@@ -65,7 +65,14 @@ export default {
       return `RM ${Number(value).toFixed(2)}`
     },
     getCartItemImage(item) {
-      if (item?.image) return item.image
+      if (item?.imageFilename) {
+        return `${apiBaseUrl}/products/image/${item.imageFilename}`
+      }
+
+      // If product has multiple images, use the first one
+      if (item?.imageFilenames && item.imageFilenames.length > 0) {
+        return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
+      }
 
       const colorMap = {
         '#667eea': 'blue',

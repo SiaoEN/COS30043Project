@@ -174,16 +174,18 @@ export default {
       return { emoji: '✨', bg: 'linear-gradient(135deg,#f8f8f8,#ececec)' }
     },
     normalizeProduct(raw) {
-      const visual = this.categoryVisual(raw.category)
-      return {
-        ...raw,
-        id: raw._id,
-        image: raw.image || '',
-        rating: raw.rating || 0,
-        reviews: raw.reviews || 0,
-        emoji: visual.emoji,
-        bg: visual.bg,
-        badge: raw.featured ? 'FEATURED' : ''
+    const visual = this.categoryVisual(raw.category)
+    return {
+      ...raw,
+      id: raw._id,
+      // Build GridFS image URLs
+      image: raw.imageFilename ? `${apiBaseUrl}/products/image/${raw.imageFilename}` : '',
+      images: raw.imageFilenames ? raw.imageFilenames.map(fn => `${apiBaseUrl}/products/image/${fn}`) : [],
+      rating: raw.rating || 0,
+      reviews: raw.reviews || 0,
+      emoji: visual.emoji,
+      bg: visual.bg,
+      badge: raw.featured ? 'FEATURED' : ''
       }
     },
     async fetchProducts() {

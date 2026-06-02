@@ -164,6 +164,13 @@ export default {
     },
     getItemPreviewImage(item) {
       if (!this.isCustomItem(item)) {
+        // Use GridFS filenames if available
+        if (item?.imageFilename) {
+          return `${apiBaseUrl}/products/image/${item.imageFilename}`
+        }
+        if (item?.imageFilenames && item.imageFilenames.length > 0) {
+          return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
+        }
         if (item?.image) return item.image
 
         const productImage = item?.productId?.image || item?.productId?.images?.[0]

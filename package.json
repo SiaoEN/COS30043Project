@@ -11,6 +11,9 @@
     "backend:start": "npm --prefix backend run start"
   },
   "dependencies": {
+    "gridfs-stream": "^1.1.1",
+    "mongodb": "^7.2.0",
+    "multer-gridfs-storage": "^5.0.2",
     "vue": "^3.5.32",
     "vue-router": "^5.0.6"
   },

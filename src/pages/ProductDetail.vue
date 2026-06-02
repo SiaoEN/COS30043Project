@@ -135,8 +135,12 @@ export default {
         this.product = {
           ...data,
           id: data._id,
-          sizes: Array.isArray(parsedSizes) ? (parsedSizes.length ? parsedSizes : ['Standard']) : ['Standard']
+          sizes: Array.isArray(parsedSizes) ? (parsedSizes.length ? parsedSizes : ['Standard']) : ['Standard'],
+          // Build GridFS image URLs
+          image: data.imageFilename ? `${apiBaseUrl}/products/image/${data.imageFilename}` : '',
+          images: data.imageFilenames ? data.imageFilenames.map(fn => `${apiBaseUrl}/products/image/${fn}`) : []
         }
+
         this.imageIndex = 0
         this.selectedSize = this.product.sizes[0]
 

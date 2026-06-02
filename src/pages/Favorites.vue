@@ -4,7 +4,7 @@
     <div v-if="favorites.length > 0" class="favorites-grid">
       <div v-for="item in favorites" :key="item.id" class="favorite-card">
         <div class="card-image">
-          <img :src="item.image" :alt="item.name" />
+          <img :src="getFavoriteImage(item)" :alt="item.name" />
           <button @click="removeFavorite(item.id)" class="remove-btn">✕</button>
         </div>
         <h3>{{ item.name }}</h3>
@@ -39,6 +39,16 @@ export default {
       addCartItem({ ...item, quantity: 1, itemType: item.itemType || 'product' })
       window.dispatchEvent(new Event('cartchange'))
       this.$router.push('/cart')
+    },
+    getFavoriteImage(item) {
+      // Use GridFS filenames if available
+      if (item?.imageFilename) {
+        return `${apiBaseUrl}/products/image/${item.imageFilename}`
+      }
+      if (item?.imageFilenames && item.imageFilenames.length > 0) {
+        return `${apiBaseUrl}/products/image/${item.imageFilenames[0]}`
+      }
+      return item?.image || ''
     }
   },
   mounted() {
