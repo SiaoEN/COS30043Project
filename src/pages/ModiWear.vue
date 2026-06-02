@@ -1501,7 +1501,36 @@ export default {
   }
 
   .btn {
+    width: 70%;
+  }
+  .page-header-logo {
+    max-width: 150px;
+    height: auto;
+  }
+  .page-header {
+    grid-template-columns: 1fr;
+  }
+
+  .design-section {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .preview-box {
+    padding: 10px;
+    min-height: auto;
+  }
+
+  .garment-preview {
     width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  .control-group input,
+  .control-group select,
+  .control-group textarea {
+    width: 80%;
   }
 }
 
