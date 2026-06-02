@@ -25,7 +25,7 @@ import {
   getProducts,
   updateProduct
 } from '../controllers/productController.js';
-import { gfs } from '../db.js'; // import GridFS instance
+import { gfs } from '../config/db.js'; // import GridFS instance
 
 const router = Router();
 
