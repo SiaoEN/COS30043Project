@@ -2,6 +2,8 @@ import Order from '../models/Order.js'
 import User from '../models/User.js'
 import Product from '../models/Product.js'
 
+console.log(req.file)
+
 export const uploadOrderPng = async (req, res) => {
   try {
     if (!req.file) {
