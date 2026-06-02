@@ -36,34 +36,62 @@
 // })
 
 // export default upload
-import multer from 'multer';
-import { GridFsStorage } from 'multer-gridfs-storage';
+// import multer from 'multer';
+// import { GridFsStorage } from 'multer-gridfs-storage';
 
-// Configure GridFS storage to use MongoDB Atlas
+// // Configure GridFS storage to use MongoDB Atlas
+// const storage = new GridFsStorage({
+//   url: process.env.MONGODB_URI, // Atlas connection string from .env
+//   file: (req, file) => {
+//     // Store each file in the 'uploads' bucket with its original name
+//     return {
+//       filename: file.originalname,
+//       bucketName: 'uploads'
+//     };
+//   }
+// });
+
+// // Only allow images
+// const fileFilter = (req, file, cb) => {
+//   if (file.mimetype.startsWith('image/')) {
+//     cb(null, true);
+//   } else {
+//     cb(new Error('Only image files are allowed'), false);
+//   }
+// };
+
+// const upload = multer({
+//   storage,
+//   fileFilter,
+//   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+// });
+
+// export default upload;
+
+import multer from 'multer'
+import { GridFsStorage } from 'multer-gridfs-storage'
+
+console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI)
+
 const storage = new GridFsStorage({
-  url: process.env.MONGODB_URI, // Atlas connection string from .env
+  url: process.env.MONGODB_URI,
+
   file: (req, file) => {
-    // Store each file in the 'uploads' bucket with its original name
+    console.log('FILE CALLBACK HIT')
+    console.log(file.originalname)
+
     return {
-      filename: file.originalname,
+      filename: `${Date.now()}-${file.originalname}`,
       bucketName: 'uploads'
-    };
+    }
   }
-});
+})
 
-// Only allow images
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed'), false);
-  }
-};
+storage.on('connection', () => {
+  console.log('GRIDFS CONNECTED')
+})
 
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-});
-
-export default upload;
+storage.on('connectionFailed', (err) => {
+  console.error('GRIDFS CONNECTION FAILED')
+  console.error(err)
+})
