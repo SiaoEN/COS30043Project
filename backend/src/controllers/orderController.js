@@ -4,6 +4,7 @@ import Product from '../models/Product.js'
 
 export const uploadOrderPng = async (req, res) => {
   try {
+    
     console.log('PNG FILE:')
     console.log(req.file)
 
