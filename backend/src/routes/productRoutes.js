@@ -34,10 +34,29 @@ router.route('/')
   .get(getProducts)
   .post(protect, adminOnly, upload.array('images', 8), createProduct);
 
+// router.route('/:id')
+//   .get(getProductById)
+//   .put(protect, adminOnly, upload.array('images', 8), updateProduct)
+//   .delete(protect, adminOnly, deleteProduct);
+
 router.route('/:id')
   .get(getProductById)
-  .put(protect, adminOnly, upload.array('images', 8), updateProduct)
-  .delete(protect, adminOnly, deleteProduct);
+  .put(
+    protect,
+    adminOnly,
+    (req, res, next) => {
+      console.log('PUT ROUTE HIT')
+      next()
+    },
+    upload.array('images', 8),
+    (req, res, next) => {
+      console.log('UPLOAD SUCCESS')
+      console.log(req.files) // Log uploaded files info
+      next()
+    },
+    updateProduct
+  )
+  .delete(protect, adminOnly, deleteProduct)
 
 // Extra route: stream image from GridFS
 router.get('/image/:filename', (req, res) => {

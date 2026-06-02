@@ -178,6 +178,25 @@ app.use((err, req, res, next) => {
   })
 })
 
+app.use((err, req, res, next) => {
+  console.error('ERROR CAUGHT:')
+  console.error(err)
+
+  res.status(500).json({
+    message: err.message,
+    stack: process.env.NODE_ENV !== 'production' ? err.stack : undefined
+  })
+})
+
+app.use((err, req, res, next) => {
+  console.error('GLOBAL ERROR:')
+  console.error(err)
+
+  res.status(500).json({
+    message: err.message,
+    stack: err.stack
+  })
+})
 // ===== START SERVER =====
 
 app.listen(port, () => {
