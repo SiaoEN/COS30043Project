@@ -9,7 +9,7 @@
         </div>
         <div class="order-details">
           <p><strong>Date:</strong> {{ order.date }}</p>
-          <p><strong>Total:</strong> ${{ order.total }}</p>
+          <p><strong>Total:</strong> RM{{ order.total }}</p>
           <p><strong>Items:</strong> {{ order.itemsSummary }}</p>
         </div>
         <button @click="viewOrder(order.id)" class="view-btn">View Details</button>
