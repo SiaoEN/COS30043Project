@@ -419,5 +419,114 @@ textarea {
     align-items: flex-start;
     flex-direction: column;
   }
+  /* Tablet */
+@media (max-width: 900px) {
+  .admin-product-page {
+    padding:
+      calc(var(--header-height) + 20px)
+      16px
+      32px;
+  }
+
+  .admin-hero {
+    padding: 22px;
+    gap: 14px;
+  }
+
+  .admin-chip {
+    align-self: flex-start;
+  }
+
+  .admin-form,
+  .tips-card {
+    padding: 20px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phone */
+@media (max-width: 600px) {
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .admin-product-page {
+    padding:
+      calc(var(--header-height) + 16px)
+      12px
+      24px;
+    overflow-x: hidden;
+  }
+
+  .admin-hero {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .admin-hero h1 {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  .admin-hero p {
+    font-size: 14px;
+  }
+
+  .admin-chip {
+    width: 100%;
+    text-align: center;
+  }
+
+  .admin-form,
+  .tips-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  .size-grid {
+    gap: 8px;
+  }
+
+  .size-pill {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .image-preview-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .message {
+    width: 100%;
+    text-align: center;
+  }
+}
 }
 </style>
