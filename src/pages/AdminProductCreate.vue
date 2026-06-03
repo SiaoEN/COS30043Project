@@ -247,7 +247,7 @@ export default {
 
 .admin-form-grid {
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   margin-top: 24px;
 }
