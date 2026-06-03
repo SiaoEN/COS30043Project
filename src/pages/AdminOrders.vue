@@ -24,6 +24,7 @@
       </div>
     <div v-if="loading">Loading...</div>
     <div v-else>
+      <div class="table-wrapper">
       <table class="orders-table">
         <thead>
           <tr>
@@ -59,6 +60,7 @@
           </tr>
         </tbody>
       </table>
+    </div>
       <div class="pagination">
         <button @click="changePage('prev')" :disabled="page <= 1" class="page-btn">◀ Prev</button>
         <div class="page-indicator">Page <strong>{{ page }}</strong> of <strong>{{ pages }}</strong></div>
@@ -226,7 +228,7 @@ export default {
   gap: 12px;
   align-items: flex-end;
   margin-bottom: 14px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .control-group {
@@ -323,13 +325,19 @@ export default {
 .btn.primary { background: var(--accent); color: #fff }
 .btn.muted { background: transparent; color: var(--text2); border: 1px solid var(--border) }
 
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .orders-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 1200px;
+  min-width: 900px;
 }
 .orders-table th,
 .orders-table td {
@@ -344,6 +352,7 @@ export default {
 
 .orders-table td {
   vertical-align: middle;
+  word-break: break-word;
 }
 
 .order-preview {
@@ -442,5 +451,106 @@ export default {
     flex-wrap: wrap;
     align-items: center;
   }
+
+@media (max-width: 768px) {
+  .orders-table,
+  .orders-table thead,
+  .orders-table tbody,
+  .orders-table th,
+  .orders-table td,
+  .orders-table tr {
+    display: block;
+  }
+
+  .orders-table thead {
+    display: none;
+  }
+
+  .orders-table tr {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 12px;
+  }
+
+  .orders-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    padding: 8px 0;
+    text-align: right;
+    gap: 12px;
+  }
+
+  .orders-table td::before {
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .orders-table td:nth-child(1)::before {
+    content: "Order ID";
+  }
+
+  .orders-table td:nth-child(2)::before {
+    content: "User";
+  }
+
+  .orders-table td:nth-child(3)::before {
+    content: "Date";
+  }
+
+  .orders-table td:nth-child(4)::before {
+    content: "Items";
+  }
+
+  .orders-table td:nth-child(5)::before {
+    content: "Total";
+  }
+
+  .orders-table td:nth-child(6)::before {
+    content: "Status";
+  }
+
+  .orders-table td:nth-child(7)::before {
+    content: "Actions";
+  }
+
+  .actions-buttons {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .status-select {
+    width: 100%;
+    min-width: 0;
+  }
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-group,
+  .control-group,
+  .control-actions {
+    width: 100%;
+  }
+
+  .control-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn {
+    flex: 1;
+  }
+
+  .select,
+  .search-input {
+    width: 100%;
+    min-width: 0;
+  }
+}
 }
 </style>
