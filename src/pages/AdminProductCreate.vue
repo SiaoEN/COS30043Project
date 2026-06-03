@@ -409,7 +409,7 @@ textarea {
   margin-top: 8px;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 900px) {
   .admin-form-grid,
   .field-row {
     grid-template-columns: 1fr;

@@ -337,7 +337,6 @@ export default {
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 900px;
 }
 .orders-table th,
 .orders-table td {
