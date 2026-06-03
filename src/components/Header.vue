@@ -35,6 +35,10 @@
           <div class="profile-dropdown" v-if="showProfileMenu">
             <div v-if="currentUser" class="signed-in-as">Signed in as: {{ currentUser.email }}</div>
             <template v-if="currentUser">
+              <router-link to="/modiwear" class="dropdown-item" active-class="active">ModiWear</router-link>
+              <router-link v-if="isAdminUser()" to="/admin/products/new" class="dropdown-item" active-class="active">Admin Products</router-link>
+              <router-link v-if="isAdminUser()" to="/admin/orders" class="dropdown-item" active-class="active">Admin Orders</router-link>
+              <router-link v-if="!isAdminUser()" to="/favorites" class="dropdown-item" active-class="active">Favorites</router-link>
               <router-link v-if="!isAdminUser()" to="/order-history" class="dropdown-item">My Orders</router-link>
               <button class="dropdown-item logout-btn" @click="logout">Logout</button>
             </template>
