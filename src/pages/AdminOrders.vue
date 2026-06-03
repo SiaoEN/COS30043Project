@@ -522,7 +522,7 @@ export default {
   }
 
   .status-select {
-    width: 80%;
+    width: 60%;
     min-width: 0;
   }
   .controls {
